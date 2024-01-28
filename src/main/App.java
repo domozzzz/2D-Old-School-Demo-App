@@ -21,9 +21,9 @@ public class App extends Canvas implements Runnable {
 	private static final long serialVersionUID = 1L;
 
 	public static final int FPS = 60;
-	public static final int WIDTH = 512;
-	public static final int HEIGHT = 512;
-	public static final int SCALE = 1;
+	public static final int WIDTH = 256;
+	public static final int HEIGHT = 256;
+	public static final int SCALE = 2;
 	
 	public static String DEMO = "None";
 	public static String[] values = {"None", "Fire", "Plasma", "Noise", "XOR"};
