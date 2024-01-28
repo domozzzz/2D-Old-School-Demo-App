@@ -2,7 +2,6 @@ package main;
 
 import java.awt.BorderLayout;
 import java.awt.Canvas;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
@@ -15,10 +14,9 @@ import javax.swing.JFrame;
 import shader.Fire;
 import shader.Noise;
 import shader.Plasma;
-import shader.Tunnel;
 import shader.Xor;
 
-public class Game extends Canvas implements Runnable {
+public class App extends Canvas implements Runnable {
 	
 	private static final long serialVersionUID = 1L;
 
@@ -39,7 +37,7 @@ public class Game extends Canvas implements Runnable {
 	private Screen screen;
 	private BufferedImage displayImg;
 	
-	public Game() {
+	public App() {
 		this.setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
 		
 		screen = new Screen();
@@ -77,16 +75,12 @@ public class Game extends Canvas implements Runnable {
 			lastTime = currentTime;
 			
 			if (i >= 1) {
-				tick();
 				render();
 				i--;
 			}
 		}
 	}
-	
-	private void tick() {
-	}
-	
+
 	private void render() {
 		BufferStrategy bs = this.getBufferStrategy();
 		if (bs == null) {
@@ -94,7 +88,7 @@ public class Game extends Canvas implements Runnable {
 			return;
 		}
 		
-		switch (Game.DEMO) {
+		switch (App.DEMO) {
 		case "Plasma" -> plasma.render(screen);
 		case "XOR" -> xor.render(screen);
 		case "Fire" -> fire.render(screen);
@@ -115,21 +109,26 @@ public class Game extends Canvas implements Runnable {
 
 	public static void main(String[] args) {
 		JFrame frame = new JFrame();
-		Game game = new Game();
+		App app = new App();
 		int panelWidth = 300;
-		SidePanel sp = new SidePanel(panelWidth, HEIGHT);
+		SidePanel sp = new SidePanel(app, panelWidth, HEIGHT);
 		
 		sp.setLocation(WIDTH, 0);
 		frame.setPreferredSize(new Dimension((WIDTH + panelWidth) * SCALE, HEIGHT * SCALE));
-		frame.add(game, BorderLayout.WEST);
+		frame.add(app, BorderLayout.WEST);
 		frame.add(sp);
-		frame.setTitle("beebee");
+		frame.setTitle("Oldschool Demos");
 		frame.pack();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
 		frame.setVisible(true);
 		frame.setLocationRelativeTo(null);
 		
-		game.start();
+		app.start();
+	}
+
+	public void reset() {
+		plasma.reset();
+		
 	}
 }

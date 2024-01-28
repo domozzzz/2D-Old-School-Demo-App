@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.util.Random;
 
 import main.Screen;
+import main.Settings;
 
 public class Fire {
 	
@@ -32,7 +33,7 @@ public class Fire {
 
 	public void render(Screen screen) {
 		
-		paletteShift++;
+		paletteShift += Settings.SPEED;
 		
 
 		for(int x = 0; x < w; x++) {

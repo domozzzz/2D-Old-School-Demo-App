@@ -1,70 +1,127 @@
 package main;
 
-import java.awt.Canvas;
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
+import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSeparator;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import shader.Plasma;
-
 public class SidePanel extends JPanel{
-	
-	private int w, h;
-	
-	JPanel plasmaPanel;
-	JPanel demoPanel;
+		
+	JPanel sidePanel;
+	App app;
 
 	private static final long serialVersionUID = 1L;
 
-	public SidePanel(int w, int h) {
+	public SidePanel(App app, int w, int h) {
 		
-		this.w = w;
-		this.h = h;
 		this.setSize(new Dimension(w, h));
+		addSidePanel();
+		this.app = app;
 		
-		addComponents();
+	}
+
+	private void addSidePanel() {
+
+		//init
+		sidePanel = new JPanel();
+		sidePanel.setLayout(new BoxLayout(sidePanel, BoxLayout.Y_AXIS));
 		
-		plasmaSettings();
-				
-		switch (Game.DEMO) {
-		case "Plasma" -> plasmaPanel.setVisible(true);
-		case "Fire" -> plasmaPanel.setVisible(false);
+		//demo select
+		sidePanel.add(new JLabel("Demo: "));
+		
+		DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
+		for (int i = 0; i < App.values.length; i++) {
+			model.addElement(App.values[i]);
 		}
-	}
+
+		JComboBox<String> comboBox = new JComboBox<>(model);
+		
+		comboBox.addActionListener (new ActionListener () {
+		    public void actionPerformed(ActionEvent e) {
+		    	App.DEMO = (String) comboBox.getSelectedItem();
+		    }
+		});
+		sidePanel.add(comboBox);
+		
+		//pattern select
+		sidePanel.add(new JLabel("Pattern: "));
+		
+		DefaultComboBoxModel<String> patternModel = new DefaultComboBoxModel<>();
+		for (int i = 1; i <= 4; i++) {
+			patternModel.addElement(String.valueOf(i));
+		}
+
+		JComboBox<String> patternComboBox = new JComboBox<>(patternModel);
+		
+		patternComboBox.addActionListener (new ActionListener () {
+		    public void actionPerformed(ActionEvent e) {
+		    	Settings.PATTERN = Integer.valueOf((String) patternComboBox.getSelectedItem());
+		    	app.reset();
+		    }
+		});
+		sidePanel.add(patternComboBox);
+
+		//colors
+		
+		//sidePanel.add(new JSeparator(JSeparator.VERTICAL));
 	
-	private void FireSettings() {
-		this.remove(plasmaPanel);
-		this.revalidate();
-	}
-	
-	private void plasmaSettings() {
+		sidePanel.add(new JLabel("ColorMode: "));
 		
+		JCheckBox rBox = new JCheckBox("R", true);
+		JCheckBox gBox = new JCheckBox("G", true);
+		JCheckBox bBox = new JCheckBox("B", true);
 		
-		plasmaPanel = new JPanel();
-		plasmaPanel.add(new JLabel("ColorMode: "));
+		rBox.addItemListener (new ItemListener () {
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				if (e.getStateChange() == 1) {
+					Settings.RED = true;
+				} else {
+					Settings.RED = false;
+				}
+				app.reset();
+			}
+		});
 		
-		JCheckBox rBox = new JCheckBox("R");
-		JCheckBox gBox = new JCheckBox("G");
-		JCheckBox bBox = new JCheckBox("B");
+		gBox.addItemListener (new ItemListener () {
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				if (e.getStateChange() == 1) {
+					Settings.GREEN = true;
+				} else {
+					Settings.GREEN = false;
+				}
+				app.reset();
+			}
+		});
 		
-		//rBox.addItemListener() => {;
+		bBox.addItemListener (new ItemListener () {
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				if (e.getStateChange() == 1) {
+					Settings.BLUE = true;
+				} else {
+					Settings.BLUE = false;
+				}
+				app.reset();
+			}
+		});
 		
-		plasmaPanel.add(rBox);
-		plasmaPanel.add(gBox);
-		plasmaPanel.add(bBox);
+		sidePanel.add(rBox);
+		sidePanel.add(gBox);
+		sidePanel.add(bBox);
 		
 		JSlider slider = new JSlider(0, 12, 1);
 		
@@ -73,43 +130,16 @@ public class SidePanel extends JPanel{
 		slider.setPaintLabels(true);
 	        
 		slider.setMajorTickSpacing(12);
-        slider.setMinorTickSpacing(1); 
-
+	    slider.setMinorTickSpacing(1); 
+	
 		slider.addChangeListener(new ChangeListener() {
 			
 			@Override
 			public void stateChanged(ChangeEvent e) {
-				Plasma.speed = slider.getValue();
+				Settings.SPEED = slider.getValue();
 			}
 		});
-		plasmaPanel.add(slider);
-		this.add(plasmaPanel);
-	}
-	
-
-
-	private void addComponents() {
-		demoSelect();
-	}
-	
-	private void demoSelect() {
-		demoPanel = new JPanel();
-		//demoPanel.setBackground(Color.RED);
-		
-		demoPanel.add(new JLabel("Demo: "));
-		
-		DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
-		for (int i = 0; i < Game.values.length; i++) {
-			model.addElement(Game.values[i]);
-		}
-
-		JComboBox<String> comboBox = new JComboBox<>(model);
-		comboBox.addActionListener (new ActionListener () {
-		    public void actionPerformed(ActionEvent e) {
-		    	Game.DEMO = (String) comboBox.getSelectedItem();
-		    }
-		});
-		demoPanel.add(comboBox);
-		this.add(demoPanel);
+		sidePanel.add(slider);
+		this.add(sidePanel);
 	}
 }
