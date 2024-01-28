@@ -14,6 +14,7 @@ import javax.swing.JFrame;
 import shader.Fire;
 import shader.Noise;
 import shader.Plasma;
+import shader.Tunnel;
 import shader.Xor;
 
 public class App extends Canvas implements Runnable {
@@ -26,12 +27,13 @@ public class App extends Canvas implements Runnable {
 	public static final int SCALE = 2;
 	
 	public static String DEMO = "None";
-	public static String[] values = {"None", "Fire", "Plasma", "Noise", "XOR"};
+	public static String[] values = {"None", "Fire", "Plasma", "Noise", "Tunnel", "XOR"};
 	
 	Plasma plasma;
 	Fire fire;
 	Noise noise;
 	Xor xor;
+	Tunnel tunnel;
 	private int[] pixels;
 	public boolean running;
 	private Screen screen;
@@ -49,6 +51,7 @@ public class App extends Canvas implements Runnable {
 		plasma = new Plasma(WIDTH, HEIGHT);
 		fire = new Fire(WIDTH, HEIGHT);
 		noise = new Noise(WIDTH, HEIGHT, screen);
+		tunnel = new Tunnel(WIDTH, HEIGHT);
 		xor = new Xor(WIDTH, HEIGHT);		
 	}
 	
@@ -92,7 +95,8 @@ public class App extends Canvas implements Runnable {
 		case "Plasma" -> plasma.render(screen);
 		case "XOR" -> xor.render(screen);
 		case "Fire" -> fire.render(screen);
-		case "Noise"-> noise.render(screen);
+		case "Noise" -> noise.render(screen);
+		case "Tunnel" -> tunnel.render(screen);
 		case "None"-> Arrays.fill(screen.pixels, 0x000000);
 		}
 				
