@@ -23,7 +23,7 @@ public class Fire {
 		
 		random = new Random();
 		palette = new int[255];
-		fire = new int [w][h];
+		fire = new int [h][w];
 		
 		for (int x = 0; x < 255; x++) {
 
@@ -33,36 +33,29 @@ public class Fire {
 
 	public void render(Screen screen) {
 		
-		paletteShift += Settings.SPEED;
+		//paletteShift += Settings.SPEED;
 		
 
 		for(int x = 0; x < w; x++) {
 			fire[h - 1][x] = Math.abs(random.nextInt()) % 256;
 		}
-				
+		
+		for (int y = 0; y < h - 1; y++) {
+			for (int x = 0; x < w; x++) {
+
+
+			      fire[y][x] =
+			    	        ((fire[(y + 1) % h][(x - 1 + w) % w]
+			    	        + fire[(y + 1) % h][(x) % w]
+			    	        + fire[(y + 1) % h][(x + 1) % w]
+			    	        + fire[(y + 2) % h][(x) % w]) *1024) / 4097;
+			}
+		}
+		
+		for (int y = 0; y < h - 1; y++) {
 		for (int x = 0; x < w; x++) {
-			for (int y = 0; y < h; y++) {
-				
-//			    int grayScale = (int) (
-//			            128.0 + (128.0 * Math.sin(x / 16.0))
-//			            + 128.0 + (128.0 * Math.sin(y / 32.0))
-//			            + 128.0 + (128.0 * Math.sin(Math.sqrt(((x - w / 2.0)* (x - w / 2.0) + (y - h / 2.0) * (y - h / 2.0))) / 8.0))
-//			            + 128.0 + (128.0 * Math.sin(Math.sqrt((x * x + y * y)) / 8.0))
-//			          ) / 2;
-			    
-//			    int grayScale = (int) (
-//			            128.0 + (128.0 * Math.sin(Math.sqrt(((x - w / 2.0)* (x - w / 2.0) + (y - h / 2.0) * (y - h / 2.0))) / 8.0)));
-				
-//			    int grayScale = (int) (
-//			        128.0 + (128.0 * Math.sin(x / 16.0))
-//			        + 128.0 + (128.0 * Math.sin(y / 16.0)));
-				
-    	      fire[y][x] =
-	    		  (int) ((fire[(y + 1) % h][(x - 1 + w) % w]
-			        + fire[(y + 1) % h][(x) % w]
-			        + fire[(y + 1) % h][(x + 1) % w]
-			        + fire[(y + 2) % h][(x) % w])
-    	        / 4.0);
+
+			      
 			    screen.pixels[x + y*w] = palette[fire[y][x]];
 			}
 		}
