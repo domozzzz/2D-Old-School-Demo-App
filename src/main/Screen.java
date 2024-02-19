@@ -2,11 +2,11 @@ package main;
 
 public class Screen {
 	
-	public int w;
-	public int h;
-	public int[] pixels;
-	int yOffs = 0;
-	int xOffs = 0;
+	private int w;
+	private int h;
+	private int[] pixels;
+	private int yOffs = 0;
+	private int xOffs = 0;
 	
 	public void init(int width, int height) {
 		this.w = width;
@@ -27,6 +27,10 @@ public class Screen {
 				pixels[xPix + yPix * w] = src;
 			}
 		}
+	}
+
+	public int[] getPixels() {
+		return pixels;
 	}
 
 

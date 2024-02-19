@@ -12,34 +12,52 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JSeparator;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 public class SidePanel extends JPanel{
 		
-	JPanel sidePanel;
-	App app;
+	private App app;
+	
+	private JLabel demoLabel;
+	private JLabel patternLabel;
+	private JLabel colorLabel;
+	private JLabel speedLabel;
+	
+	private JSlider slider;
+	private JComboBox<String> patternComboBox;
+	
+	
+	private JCheckBox rBox;
+	private JCheckBox gBox;
+	private JCheckBox bBox;
 
 	private static final long serialVersionUID = 1L;
 
 	public SidePanel(App app, int w, int h) {
-		
-		this.setSize(new Dimension(w, h));
-		addSidePanel();
 		this.app = app;
 		
+		this.setSize(new Dimension(w, h));
+		addthis();
 	}
 
-	private void addSidePanel() {
-
-		//init
-		sidePanel = new JPanel();
-		sidePanel.setLayout(new BoxLayout(sidePanel, BoxLayout.Y_AXIS));
+	private void addthis() {
 		
+		//init pannel
+		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		
+		addDemoSelect();
+		addPatternSelect();
+		addRGBToggles();
+		addSpeedSlider();
+	}
+		
+	private void addDemoSelect() {
 		//demo select
-		sidePanel.add(new JLabel("Demo: "));
+		
+		demoLabel = new JLabel("Demo: ");
+		this.add(demoLabel);
 		
 		DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
 		for (int i = 0; i < App.values.length; i++) {
@@ -47,23 +65,103 @@ public class SidePanel extends JPanel{
 		}
 
 		JComboBox<String> comboBox = new JComboBox<>(model);
+		comboBox.setMaximumSize(new Dimension(150, 25));
 		
 		comboBox.addActionListener (new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
 		    	App.DEMO = (String) comboBox.getSelectedItem();
+		    	
+				switch (App.DEMO) {
+					case "None":
+						hidePatternSelect();
+						hideRGBSelect();
+						hideSlider();
+						break;
+					case "Plasma":
+						showPatternSelect();
+						showRGBSelect();
+						showSlider();
+						break;
+						
+					case "Fire":
+						hidePatternSelect();
+						hideRGBSelect();
+						hideSlider();
+						break;
+						
+					case "Noise":
+						hidePatternSelect();
+						hideRGBSelect();
+						hideSlider();
+						break;
+						
+					case "Tunnel":
+						hidePatternSelect();
+						hideRGBSelect();
+						showSlider();
+						
+						break;
+					
+					case "XOR":
+						showPatternSelect();
+						showRGBSelect();
+						hideSlider();
+						break;
+				}
+				
 		    }
 		});
-		sidePanel.add(comboBox);
+		this.add(comboBox);
+	}
+	
+	private void showRGBSelect() {
+		colorLabel.setVisible(true);
+		rBox.setVisible(true);
+		gBox.setVisible(true);
+		bBox.setVisible(true);
+	}
+	
+	private void hideRGBSelect() {
+		colorLabel.setVisible(false);
+		rBox.setVisible(false);
+		gBox.setVisible(false);
+		bBox.setVisible(false);
+	}
+	
+	private void showSlider() {
+		speedLabel.setVisible(true);
+		slider.setVisible(true);	
+	}
+	
+	private void hideSlider() {
+		speedLabel.setVisible(false);
+		slider.setVisible(false);
+	}
+	
+	private void showPatternSelect() {
+		patternLabel.setVisible(true);
+		patternComboBox.setVisible(true);
 		
+	}
+	
+	private void hidePatternSelect() {
+		patternLabel.setVisible(false);	
+		patternComboBox.setVisible(false);
+		
+	}
+		
+	private void addPatternSelect() {
 		//pattern select
-		sidePanel.add(new JLabel("Pattern: "));
+		patternLabel = new JLabel("Pattern: ");
+		this.add(patternLabel);
 		
 		DefaultComboBoxModel<String> patternModel = new DefaultComboBoxModel<>();
 		for (int i = 1; i <= 4; i++) {
 			patternModel.addElement(String.valueOf(i));
 		}
 
-		JComboBox<String> patternComboBox = new JComboBox<>(patternModel);
+		patternComboBox = new JComboBox<>(patternModel);
+		patternComboBox.setMaximumSize(new Dimension(150, 25));
 		
 		patternComboBox.addActionListener (new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
@@ -71,18 +169,20 @@ public class SidePanel extends JPanel{
 		    	app.reset();
 		    }
 		});
-		sidePanel.add(patternComboBox);
+		this.add(patternComboBox);
+		hidePatternSelect();
+	}
+		
+	private void addRGBToggles() {
 
-		//colors
+		colorLabel = new JLabel("Color Mode: ");
+		this.add(colorLabel);
 		
-		//sidePanel.add(new JSeparator(JSeparator.VERTICAL));
-	
-		sidePanel.add(new JLabel("ColorMode: "));
+		rBox = new JCheckBox("R", true);
+		gBox = new JCheckBox("G", true);
+		bBox = new JCheckBox("B", true);
 		
-		JCheckBox rBox = new JCheckBox("R", true);
-		JCheckBox gBox = new JCheckBox("G", true);
-		JCheckBox bBox = new JCheckBox("B", true);
-		
+		//RED
 		rBox.addItemListener (new ItemListener () {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
@@ -95,6 +195,7 @@ public class SidePanel extends JPanel{
 			}
 		});
 		
+		//GREEN
 		gBox.addItemListener (new ItemListener () {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
@@ -107,6 +208,7 @@ public class SidePanel extends JPanel{
 			}
 		});
 		
+		//BLUE
 		bBox.addItemListener (new ItemListener () {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
@@ -119,11 +221,18 @@ public class SidePanel extends JPanel{
 			}
 		});
 		
-		sidePanel.add(rBox);
-		sidePanel.add(gBox);
-		sidePanel.add(bBox);
+		this.add(rBox);
+		this.add(gBox);
+		this.add(bBox);
+		hideRGBSelect();
+	}
+	
+	private void addSpeedSlider() {
 		
-		JSlider slider = new JSlider(0, 12, 1);
+		speedLabel = new JLabel("Speed: ");
+		this.add(speedLabel);
+		
+		slider = new JSlider(0, 12, 1);
 		
 		slider.setPaintTrack(true);
 		slider.setPaintTicks(true);
@@ -139,7 +248,7 @@ public class SidePanel extends JPanel{
 				Settings.SPEED = slider.getValue();
 			}
 		});
-		sidePanel.add(slider);
-		this.add(sidePanel);
+		this.add(slider);
+		hideSlider();
 	}
 }

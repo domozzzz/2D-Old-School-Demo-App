@@ -47,8 +47,8 @@ public class Plasma implements Shader {
 		paletteShift += Settings.SPEED;
 		 
 
-		for (int x = 0; x < screen.w; x++) {
-			for (int y = 0; y < screen.h; y++) {
+		for (int x = 0; x < w; x++) {
+			for (int y = 0; y < h; y++) {
 				
 				int grayScale = 0;
 				
@@ -77,12 +77,12 @@ public class Plasma implements Shader {
 				    grayScale = (int) (
 				            128.0 + (128.0 * Math.sin(x / 16.0))
 				            + 128.0 + (128.0 * Math.sin(y / 8.0))
-				            + 128.0 + (128.0 * Math.sin(Math.sqrt(((x - screen.w / 2.0)* (x - screen.w / 2.0) + (y - screen.h / 2.0) * (y - screen.h / 2.0))) / 16.0))
+				            + 128.0 + (128.0 * Math.sin(Math.sqrt(((x - w / 2.0)* (x - w / 2.0) + (y - h / 2.0) * (y - h / 2.0))) / 16.0))
 				            + 128.0 + (128.0 * Math.sin(Math.sqrt((x * x + y * y)) / 8.0))
 				          ) / 2;
 				    break; 
 				}
-			    screen.pixels[x + y*screen.w] = palette[(grayScale + paletteShift) % 255];
+				screen.getPixels()[x + y*w] = palette[(grayScale + paletteShift) % 255];
 			}
 		}
 	}

@@ -56,7 +56,7 @@ public class Fire {
 		for (int x = 0; x < w; x++) {
 
 			      
-			    screen.pixels[x + y*w] = palette[fire[y][x]];
+			    screen.getPixels()[x + y*w] = palette[fire[y][x]];
 			}
 		}
 		

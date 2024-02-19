@@ -68,7 +68,7 @@ public class Noise {
 			    //int c = (int) (256 * smoothNoise(x/8.0, y/8.0));
 			    int c = Math.abs(random.nextInt() % 255);
 
-			    screen.pixels[x + y * w]  = new Color(c, c, c).getRGB();
+			    screen.getPixels()[x + y * w]  = new Color(c, c, c).getRGB();
 			  }
 		 }
 		screen.render();

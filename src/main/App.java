@@ -10,6 +10,7 @@ import java.awt.image.DataBufferInt;
 import java.util.Arrays;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 import shader.Fire;
 import shader.Noise;
@@ -29,13 +30,15 @@ public class App extends Canvas implements Runnable {
 	public static String DEMO = "None";
 	public static String[] values = {"None", "Fire", "Plasma", "Noise", "Tunnel", "XOR"};
 	
-	Plasma plasma;
-	Fire fire;
-	Noise noise;
-	Xor xor;
-	Tunnel tunnel;
+	public static boolean running;
+	
+	public Plasma plasma;
+	public Fire fire;
+	public Noise noise;
+	public Xor xor;
+	public Tunnel tunnel;
+	
 	private int[] pixels;
-	public boolean running;
 	private Screen screen;
 	private BufferedImage displayImg;
 	
@@ -92,16 +95,16 @@ public class App extends Canvas implements Runnable {
 		}
 		
 		switch (App.DEMO) {
-		case "Plasma" -> plasma.render(screen);
-		case "XOR" -> xor.render(screen);
-		case "Fire" -> fire.render(screen);
-		case "Noise" -> noise.render(screen);
-		case "Tunnel" -> tunnel.render(screen);
-		case "None"-> Arrays.fill(screen.pixels, 0x000000);
+			case "Plasma" -> plasma.render(screen);
+			case "XOR" -> xor.render(screen);
+			case "Fire" -> fire.render(screen);
+			case "Noise" -> noise.render(screen);
+			case "Tunnel" -> tunnel.render(screen);
+			case "None"-> Arrays.fill(screen.getPixels(), 0x000000);
 		}
 				
 		for (int i = 0; i < pixels.length; i++) {
-			pixels[i] = screen.pixels[i];
+			pixels[i] = screen.getPixels()[i];
 		}
 		
 		Graphics g = bs.getDrawGraphics();
@@ -113,12 +116,11 @@ public class App extends Canvas implements Runnable {
 
 	public static void main(String[] args) {
 		JFrame frame = new JFrame();
-		App app = new App();
+		App app = new App();	
 		int panelWidth = 300;
 		SidePanel sp = new SidePanel(app, panelWidth, HEIGHT);
 		
 		sp.setLocation(WIDTH, 0);
-		frame.setPreferredSize(new Dimension((WIDTH + panelWidth) * SCALE, HEIGHT * SCALE));
 		frame.add(app, BorderLayout.WEST);
 		frame.add(sp);
 		frame.setTitle("Oldschool Demos");

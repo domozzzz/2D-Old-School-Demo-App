@@ -61,7 +61,7 @@ public class Xor {
 		    	if (Settings.BLUE) {
 		    		b = 255 - c;
 		    	}
-			    	screen.pixels[x + y * w]  = new Color(r, g, b).getRGB();
+		    		screen.getPixels()[x + y * w]  = new Color(r, g, b).getRGB();
 //		    	} else {
 //		    		screen.pixels[x + y * w]  = c;
 //		    	}
