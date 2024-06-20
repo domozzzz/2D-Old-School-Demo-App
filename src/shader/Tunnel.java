@@ -3,26 +3,18 @@ package shader;
 import main.Screen;
 import main.Settings;
 
-public class Tunnel {
+public class Tunnel implements Shader {
 	
-	int w;
-	int h;
-	Screen testBitmap;
-	int palette[];
-	int fire[][];
-	int paletteShift = 0;
-	float animation = 0; 
-	int buffer[][];
+	private int w, h;
+	private float animation = 0; 
+	private int buffer[][];
 	
-	int texWidth = 256;
-	int texHeight = 256;
+	private int texWidth = 256;
+	private int texHeight = 256;
 	
-	int[][] texture;
-	int[][] distanceTable;
-	int[][] angleTable;
-	
-	int shiftX = 0;
-	int shiftY = 0;
+	private int[][] texture;
+	private int[][] distanceTable;
+	private int[][] angleTable;
 	
 	public Tunnel(int w, int h) {
 		
@@ -67,8 +59,7 @@ public class Tunnel {
 		    for(int y = 0; y < h; y++)
 		    for(int x = 0; x < w; x++)
 		    {
-		      //get the texel from the texture by using the tables, shifted with the animation values
-		      
+		      // get the texel from the texture by using the tables, shifted with the animation values
 		      int color = texture[(int)(distanceTable[x + shiftLookX][y + shiftLookY] + shiftX)  % texWidth]
 		          [(int)(angleTable[x + shiftLookX][y + shiftLookY]+ shiftY) % texHeight];
 		      buffer[y][x] = color;

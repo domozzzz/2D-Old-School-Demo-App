@@ -10,11 +10,11 @@ import java.awt.image.DataBufferInt;
 import java.util.Arrays;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 import shader.Fire;
 import shader.Noise;
 import shader.Plasma;
+import shader.Shader;
 import shader.Tunnel;
 import shader.Xor;
 
@@ -27,16 +27,20 @@ public class App extends Canvas implements Runnable {
 	public static final int HEIGHT = 256;
 	public static final int SCALE = 2;
 	
-	public static String DEMO = "None";
-	public static String[] values = {"None", "Fire", "Plasma", "Noise", "Tunnel", "XOR"};
+	public static Demo demo = Demo.None;
+	
+	public enum Demo {
+		None,
+		Fire,
+		Plasma,
+		Noise,
+		Tunnel,
+		Xor
+	}
 	
 	public static boolean running;
 	
-	public Plasma plasma;
-	public Fire fire;
-	public Noise noise;
-	public Xor xor;
-	public Tunnel tunnel;
+	public Shader plasma, fire, noise, xor, tunnel;
 	
 	private int[] pixels;
 	private Screen screen;
@@ -94,13 +98,13 @@ public class App extends Canvas implements Runnable {
 			return;
 		}
 		
-		switch (App.DEMO) {
-			case "Plasma" -> plasma.render(screen);
-			case "XOR" -> xor.render(screen);
-			case "Fire" -> fire.render(screen);
-			case "Noise" -> noise.render(screen);
-			case "Tunnel" -> tunnel.render(screen);
-			case "None"-> Arrays.fill(screen.getPixels(), 0x000000);
+		switch (demo) {
+			case Plasma -> plasma.render(screen);
+			case Xor -> xor.render(screen);
+			case Fire -> fire.render(screen);
+			case Noise -> noise.render(screen);
+			case Tunnel -> tunnel.render(screen);
+			case None -> Arrays.fill(screen.getPixels(), 0x000000);
 		}
 				
 		for (int i = 0; i < pixels.length; i++) {
@@ -111,7 +115,6 @@ public class App extends Canvas implements Runnable {
 		g.drawImage(displayImg, 0, 0, WIDTH * SCALE, HEIGHT * SCALE, null);
 		g.dispose();
 		bs.show();
-		
 	}
 
 	public static void main(String[] args) {
@@ -131,10 +134,5 @@ public class App extends Canvas implements Runnable {
 		frame.setLocationRelativeTo(null);
 		
 		app.start();
-	}
-
-	public void reset() {
-		plasma.reset();
-		
 	}
 }

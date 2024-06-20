@@ -1,30 +1,19 @@
 package shader;
 
 import java.awt.Color;
-import java.util.Arrays;
 import java.util.Random;
 
 import main.Screen;
 
-public class Noise {
+public class Noise implements Shader {
 	
-	int w;
-	int h;
+	private int w, h;
 	
-	int noiseWidth = 128;
-	int noiseHeight = 128;
+	private int noiseWidth = 128;
+	private int noiseHeight = 128;
 	
-	Screen testBitmap;
-	int palette[];
-	double noise[][];
-	int paletteShift = 0;
-	Random random;
-	
-	int texWidth = 256;
-	int texHeight = 256;
-	
-	int shiftX = 0;
-	int shiftY = 0;
+	private double noise[][];
+	private Random random;
 	
 	public Noise(int w, int h ,Screen screen) {
 		
@@ -62,12 +51,8 @@ public class Noise {
 		
 		for(int y = 0; y < h; y++) {
 		    for(int x = 0; x < w; x++) {
-				    
-			    //[x][y] = Math.abs(random.nextInt() % 32768 / 32768.0);
-			    
-			    //int c = (int) (256 * smoothNoise(x/8.0, y/8.0));
+		    	
 			    int c = Math.abs(random.nextInt() % 255);
-
 			    screen.getPixels()[x + y * w]  = new Color(c, c, c).getRGB();
 			  }
 		 }

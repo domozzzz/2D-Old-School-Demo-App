@@ -16,22 +16,15 @@ import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import main.App.Demo;
+
 public class SidePanel extends JPanel{
 		
 	private App app;
-	
-	private JLabel demoLabel;
-	private JLabel patternLabel;
-	private JLabel colorLabel;
-	private JLabel speedLabel;
-	
+	private JLabel demoLabel, patternLabel, colorLabel, speedLabel;
 	private JSlider slider;
 	private JComboBox<String> patternComboBox;
-	
-	
-	private JCheckBox rBox;
-	private JCheckBox gBox;
-	private JCheckBox bBox;
+	private JCheckBox rBox, gBox, bBox;
 
 	private static final long serialVersionUID = 1L;
 
@@ -39,12 +32,11 @@ public class SidePanel extends JPanel{
 		this.app = app;
 		
 		this.setSize(new Dimension(w, h));
-		addthis();
+		addSelectors();
 	}
 
-	private void addthis() {
-		
-		//init pannel
+	private void addSelectors() {
+		// init pannel
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
 		addDemoSelect();
@@ -54,14 +46,12 @@ public class SidePanel extends JPanel{
 	}
 		
 	private void addDemoSelect() {
-		//demo select
-		
 		demoLabel = new JLabel("Demo: ");
 		this.add(demoLabel);
 		
 		DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
-		for (int i = 0; i < App.values.length; i++) {
-			model.addElement(App.values[i]);
+		for (int i = 0; i < App.Demo.values().length; i++) {
+			model.addElement(App.Demo.values()[i].toString());
 		}
 
 		JComboBox<String> comboBox = new JComboBox<>(model);
@@ -69,46 +59,44 @@ public class SidePanel extends JPanel{
 		
 		comboBox.addActionListener (new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
-		    	App.DEMO = (String) comboBox.getSelectedItem();
+		    	App.demo = Demo.valueOf((String)comboBox.getSelectedItem());
 		    	
-				switch (App.DEMO) {
-					case "None":
+				switch (App.demo) {
+					case None:
 						hidePatternSelect();
 						hideRGBSelect();
 						hideSlider();
 						break;
-					case "Plasma":
+					case Plasma:
 						showPatternSelect();
 						showRGBSelect();
 						showSlider();
 						break;
 						
-					case "Fire":
+					case Fire:
 						hidePatternSelect();
 						hideRGBSelect();
 						hideSlider();
 						break;
 						
-					case "Noise":
+					case Noise:
 						hidePatternSelect();
 						hideRGBSelect();
 						hideSlider();
 						break;
 						
-					case "Tunnel":
+					case Tunnel:
 						hidePatternSelect();
 						hideRGBSelect();
 						showSlider();
-						
 						break;
 					
-					case "XOR":
+					case Xor:
 						showPatternSelect();
 						showRGBSelect();
 						hideSlider();
 						break;
-				}
-				
+				}	
 		    }
 		});
 		this.add(comboBox);
@@ -166,7 +154,6 @@ public class SidePanel extends JPanel{
 		patternComboBox.addActionListener (new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
 		    	Settings.PATTERN = Integer.valueOf((String) patternComboBox.getSelectedItem());
-		    	app.reset();
 		    }
 		});
 		this.add(patternComboBox);
@@ -191,7 +178,6 @@ public class SidePanel extends JPanel{
 				} else {
 					Settings.RED = false;
 				}
-				app.reset();
 			}
 		});
 		
@@ -204,7 +190,6 @@ public class SidePanel extends JPanel{
 				} else {
 					Settings.GREEN = false;
 				}
-				app.reset();
 			}
 		});
 		
@@ -217,7 +202,6 @@ public class SidePanel extends JPanel{
 				} else {
 					Settings.BLUE = false;
 				}
-				app.reset();
 			}
 		});
 		
@@ -242,12 +226,12 @@ public class SidePanel extends JPanel{
 	    slider.setMinorTickSpacing(1); 
 	
 		slider.addChangeListener(new ChangeListener() {
-			
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				Settings.SPEED = slider.getValue();
 			}
 		});
+		
 		this.add(slider);
 		hideSlider();
 	}

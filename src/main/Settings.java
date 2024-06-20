@@ -7,5 +7,4 @@ public class Settings {
 	public static boolean BLUE = true;
 	public static boolean GREEN = true;
 	public static int PATTERN = 1;
-
 }

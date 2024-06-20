@@ -2,21 +2,20 @@ package main;
 
 public class Screen {
 	
-	private int w;
-	private int h;
+	private int w, h;
 	private int[] pixels;
-	private int yOffs = 0;
-	private int xOffs = 0;
+	private int yOffs = 0, xOffs = 0;
 	
 	public void init(int width, int height) {
 		this.w = width;
-		this.h = width;
+		this.h = height;
 		this.pixels = new int[width * height];
 	}
 	
 	public void render() {
 		for (int y = 0; y < h; y++) {
 			int yPix = y + yOffs;
+			
 			if (yPix < 0 || yPix >= h) continue;
 
 			for (int x = 0; x < w; x++) {

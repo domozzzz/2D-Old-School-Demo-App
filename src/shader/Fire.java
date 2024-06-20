@@ -6,14 +6,12 @@ import java.util.Random;
 import main.Screen;
 import main.Settings;
 
-public class Fire {
+public class Fire implements Shader {
 	
-	int w;
-	int h;
-	int palette[];
-	int fire[][];
-	int paletteShift = 0;
-	Random random;
+	private int w, h;
+	private int palette[];
+	private int fire[][];
+	private Random random;
 
 	
 	public Fire(int w, int h) {
@@ -31,10 +29,7 @@ public class Fire {
 		}
 	}
 
-	public void render(Screen screen) {
-		
-		//paletteShift += Settings.SPEED;
-		
+	public void render(Screen screen) {		
 
 		for(int x = 0; x < w; x++) {
 			fire[h - 1][x] = Math.abs(random.nextInt()) % 256;

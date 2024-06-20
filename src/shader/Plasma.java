@@ -7,10 +7,9 @@ import main.Settings;
 
 public class Plasma implements Shader {
 	
-	int w;
-	int h;
-	int palette[];
-	int paletteShift = 0;
+	private int w, h;
+	private int palette[];
+	private int paletteShift = 0;
 		
 	public Plasma(int w, int h) {
 		this.w = w;
@@ -85,9 +84,5 @@ public class Plasma implements Shader {
 				screen.getPixels()[x + y*w] = palette[(grayScale + paletteShift) % 255];
 			}
 		}
-	}
-
-	public void reset() {
-		init();
 	}
 }
